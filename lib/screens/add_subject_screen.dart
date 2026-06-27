@@ -37,10 +37,10 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$name added successfully!'),
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          content: Text('$name added to records'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       );
     }
@@ -51,87 +51,95 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Form(
         key: _formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 100,
-                  height: 100,
+              child: Hero(
+                tag: 'app-logo',
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32),
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.colorScheme.primary.withOpacity(0.2),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: 110,
+                      height: 110,
+                    ),
+                  ),
                 ),
               ),
-            ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
-            const SizedBox(height: 24),
+            ).animate().scale(duration: 800.ms, curve: Curves.elasticOut),
+            const SizedBox(height: 32),
             Text(
-              'Add New Subject',
-              style: theme.textTheme.headlineMedium?.copyWith(
+              'Academic Intake',
+              style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w900,
                     color: theme.colorScheme.onSurface,
                   ),
-              textAlign: TextAlign.center,
-            ).animate().fade(duration: 400.ms).slideY(begin: 0.2, end: 0),
-            const SizedBox(height: 8),
-            Text(
-              'Keep track of your academic progress',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
-              textAlign: TextAlign.center,
             ).animate().fade(delay: 200.ms).slideY(begin: 0.2, end: 0),
-            const SizedBox(height: 40),
+            const SizedBox(height: 32),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: const EdgeInsets.all(28.0),
                 child: Column(
                   children: [
                     TextFormField(
                       controller: _nameController,
+                      style: TextStyle(color: theme.colorScheme.onSurface),
                       decoration: const InputDecoration(
                         labelText: 'Subject Name',
-                        prefixIcon: Icon(Icons.book_outlined),
-                        hintText: 'e.g. Mathematics',
+                        prefixIcon: Icon(Icons.menu_book_rounded),
+                        hintText: 'e.g. Computer Science',
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a subject name';
-                        }
-                        return null;
-                      },
-                    ).animate().fade(delay: 400.ms).slideX(begin: -0.1, end: 0),
+                      validator: (value) =>
+                          (value == null || value.isEmpty) ? 'Enter subject name' : null,
+                    ).animate().fade(delay: 400.ms).slideX(begin: -0.05, end: 0),
                     const SizedBox(height: 24),
                     TextFormField(
                       controller: _markController,
+                      style: TextStyle(color: theme.colorScheme.onSurface),
                       decoration: const InputDecoration(
-                        labelText: 'Marks obtained',
-                        prefixIcon: Icon(Icons.percent_rounded),
-                        hintText: '0-100',
+                        labelText: 'Points Earned',
+                        prefixIcon: Icon(Icons.stars_rounded),
+                        hintText: 'Range 0-100',
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter marks';
-                        }
-                        final mark = int.tryParse(value);
-                        if (mark == null || mark < 0 || mark > 100) {
-                          return 'Enter a valid mark (0-100)';
-                        }
-                        return null;
+                        if (value == null || value.isEmpty) return 'Enter marks';
+                        final m = int.tryParse(value);
+                        return (m == null || m < 0 || m > 100) ? 'Range 0-100' : null;
                       },
-                    ).animate().fade(delay: 600.ms).slideX(begin: -0.1, end: 0),
+                    ).animate().fade(delay: 600.ms).slideX(begin: -0.05, end: 0),
                   ],
                 ),
               ),
-            ).animate().scale(delay: 300.ms, curve: Curves.easeOutBack),
+            ).animate().scale(delay: 300.ms, curve: Curves.easeOutQuad),
             const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text('Add to Records'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _submit,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                ),
+                child: const Text('Add to Grade List'),
+              ),
             ).animate().fade(delay: 800.ms).slideY(begin: 0.5, end: 0),
           ],
         ),

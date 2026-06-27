@@ -12,46 +12,46 @@ class SummaryScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 120),
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 130),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Performance Overview',
+            'Academic Summary',
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w900,
+              color: theme.colorScheme.onSurface,
             ),
-          ).animate().fade().slideX(begin: -0.2, end: 0),
-          const SizedBox(height: 24),
+          ).animate().fade().slideX(begin: -0.1, end: 0),
+          const SizedBox(height: 32),
           
-          // Average Score Circular Indicator
           Center(
             child: Container(
-              width: 200,
-              height: 200,
+              width: 220,
+              height: 220,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: theme.colorScheme.primary.withOpacity(0.05),
                 border: Border.all(
                   color: theme.colorScheme.primary.withOpacity(0.1),
-                  width: 2,
+                  width: 1,
                 ),
               ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
-                    width: 160,
-                    height: 160,
+                    width: 180,
+                    height: 180,
                     child: CircularProgressIndicator(
                       value: provider.averageMark / 100,
-                      strokeWidth: 12,
+                      strokeWidth: 14,
                       backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
                       color: theme.colorScheme.primary,
                       strokeCap: StrokeCap.round,
-                    ).animate(onPlay: (controller) => controller.forward(from: 0)).custom(
-                      duration: 1500.ms,
-                      curve: Curves.easeOutQuart,
+                    ).animate(onPlay: (c) => c.forward(from: 0)).custom(
+                      duration: 2000.ms,
+                      curve: Curves.easeOutExpo,
                       builder: (context, value, child) => child,
                     ),
                   ),
@@ -63,12 +63,14 @@ class SummaryScreen extends StatelessWidget {
                         style: theme.textTheme.displayMedium?.copyWith(
                           fontWeight: FontWeight.w900,
                           color: theme.colorScheme.primary,
+                          letterSpacing: -2,
                         ),
                       ),
                       Text(
-                        'Avg. Mark',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        'Global Average',
+                        style: theme.textTheme.labelMedium?.copyWith(
                           color: theme.colorScheme.onSurface.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -76,34 +78,34 @@ class SummaryScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ).animate().scale(duration: 800.ms, curve: Curves.easeOutBack),
+          ).animate().scale(duration: 1000.ms, curve: Curves.backOut),
           
-          const SizedBox(height: 40),
+          const SizedBox(height: 48),
           
-          _buildAnimatedSummaryCard(
+          _buildStatCard(
             context,
-            'Total Subjects',
+            'Total Modules',
             provider.totalSubjects.toString(),
-            Icons.book_rounded,
+            Icons.category_rounded,
             const Color(0xFF6366F1),
             0,
           ),
           
-          _buildAnimatedSummaryCard(
+          _buildStatCard(
             context,
-            'Overall Grade',
+            'Final standing',
             provider.overallGrade,
-            Icons.auto_awesome_rounded,
+            Icons.verified_rounded,
             _getGradeColor(provider.overallGrade),
             1,
           ),
           
-          _buildAnimatedSummaryCard(
+          _buildStatCard(
             context,
-            'Status',
-            provider.averageMark >= 50 ? 'PASSING' : 'FAILING',
-            provider.averageMark >= 50 ? Icons.check_circle_rounded : Icons.warning_rounded,
-            provider.averageMark >= 50 ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+            'Outcome',
+            provider.averageMark >= 50 ? 'DISTINCTION' : 'UNDERPERFORMING',
+            provider.averageMark >= 50 ? Icons.check_circle_rounded : Icons.info_rounded,
+            provider.averageMark >= 50 ? const Color(0xFF10B981) : const Color(0xFFF43F5E),
             2,
           ),
         ],
@@ -111,7 +113,7 @@ class SummaryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAnimatedSummaryCard(
+  Widget _buildStatCard(
     BuildContext context,
     String title,
     String value,
@@ -121,43 +123,47 @@ class SummaryScreen extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 18),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(icon, color: color, size: 28),
+              child: Icon(icon, color: color, size: 30),
             ),
-            const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
-                    letterSpacing: 1.2,
-                    fontWeight: FontWeight.bold,
+            const SizedBox(width: 24),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title.toUpperCase(),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.5),
+                      letterSpacing: 1.5,
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
-                ),
-                Text(
-                  value,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
       ),
-    ).animate().fadeIn(delay: (400 + (index * 150)).ms).slideY(begin: 0.2, end: 0);
+    ).animate().fadeIn(delay: (500 + (index * 150)).ms).slideY(begin: 0.1, end: 0);
   }
 
   Color _getGradeColor(String grade) {
