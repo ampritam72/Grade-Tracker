@@ -37,7 +37,6 @@ build/
 **/ios/.dart_tool/
 
 # Web-related
-lib/generated_plugin_registrant.dart
 
 # Symbolication logging
 flutter_*.log
