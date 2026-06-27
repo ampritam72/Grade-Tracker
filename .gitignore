@@ -1,30 +1,57 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.kotlin
+# Dependency directories
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+IDE_SETTINGS/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Flutter/Dart/Pub-related
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Android-related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/GeneratedPluginRegistrant.java
+**/android/key.properties
+**/android/app/src/main/res/values/strings.xml
 
-### VS Code ###
+# iOS/macOS-related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/App.framework
+**/ios/Flutter/App.structurereport
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/ios/Runner/Base.lproj/LaunchScreen.storyboard
+**/ios/Runner/Base.lproj/Main.storyboard
+**/ios/DerivedData/
+**/ios/.generated/
+**/ios/.pub/
+**/ios/.dart_tool/
+
+# Web-related
+lib/generated_plugin_registrant.dart
+
+# Symbolication logging
+flutter_*.log
+
+# Exceptions to above rules
+!**/ios/Runner/Info.plist
+!**/ios/Runner/AppDelegate.swift
+!**/ios/Runner/Assets.xcassets/
+!**/android/app/src/main/res/
+!**/android/app/src/main/kotlin/
+
+# IDE files
+.idea/
 .vscode/
-
-### Mac OS ###
-.DS_Store
+*.iml
+*.iws
+*.ipr

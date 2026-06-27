@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
 import 'providers/grade_provider.dart';
 import 'theme/app_theme.dart';
 import 'screens/add_subject_screen.dart';
@@ -33,61 +34,87 @@ class StudentGradeApp extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    const AddSubjectScreen(),
-    const SubjectListScreen(),
-    const SummaryScreen(),
+  final List<Widget> _screens = const [
+    AddSubjectScreen(),
+    SubjectListScreen(),
+    SummaryScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<GradeProvider>(context, listen: false);
+    final provider = Provider.of<GradeProvider>(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
-        title: const Text('Grade Tracker'),
+        title: const Text('GradeMaster'),
         actions: [
           IconButton(
-            icon: Icon(provider.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            style: IconButton.styleFrom(
+              backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+            ),
+            icon: Icon(
+              provider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: theme.colorScheme.primary,
+            ),
             onPressed: () => provider.toggleTheme(),
           ),
+          const SizedBox(width: 8),
         ],
       ),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: _screens[_currentIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+      body: PageTransitionSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+          return FadeThroughTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          );
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline),
-            label: 'Add',
+        child: _screens[provider.currentNavigationIndex],
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: NavigationBar(
+            selectedIndex: provider.currentNavigationIndex,
+            onDestinationSelected: (index) {
+              provider.setNavigationIndex(index);
+            },
+            backgroundColor: Colors.transparent,
+            indicatorColor: theme.colorScheme.primary.withOpacity(0.1),
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.add_rounded, color: theme.colorScheme.primary),
+                label: 'Add',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.list_alt_rounded, color: theme.colorScheme.primary),
+                label: 'Subjects',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.analytics_rounded, color: theme.colorScheme.primary),
+                label: 'Summary',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
-            label: 'Subjects',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics_outlined),
-            label: 'Summary',
-          ),
-        ],
+        ),
       ),
     );
   }

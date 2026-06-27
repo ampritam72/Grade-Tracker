@@ -4,9 +4,16 @@ import '../models/subject.dart';
 class GradeProvider with ChangeNotifier {
   final List<Subject> _subjects = [];
   bool _isDarkMode = false;
+  int _currentNavigationIndex = 0;
 
   List<Subject> get subjects => List.unmodifiable(_subjects);
   bool get isDarkMode => _isDarkMode;
+  int get currentNavigationIndex => _currentNavigationIndex;
+
+  void setNavigationIndex(int index) {
+    _currentNavigationIndex = index;
+    notifyListeners();
+  }
 
   void addSubject(Subject subject) {
     _subjects.add(subject);

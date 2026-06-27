@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../models/subject.dart';
 import '../providers/grade_provider.dart';
 
@@ -37,8 +38,9 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$name added successfully!'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
           behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       );
     }
@@ -46,76 +48,81 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final theme = Theme.of(context);
+
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 20),
             Text(
               'Add New Subject',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+              style: theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    color: theme.colorScheme.onSurface,
                   ),
               textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Subject Name',
-                prefixIcon: const Icon(Icons.book),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            ).animate().fade(duration: 400.ms).slideY(begin: 0.2, end: 0),
+            const SizedBox(height: 8),
+            Text(
+              'Keep track of your academic progress',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  ),
+              textAlign: TextAlign.center,
+            ).animate().fade(delay: 200.ms).slideY(begin: 0.2, end: 0),
+            const SizedBox(height: 40),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Subject Name',
+                        prefixIcon: Icon(Icons.book_outlined),
+                        hintText: 'e.g. Mathematics',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a subject name';
+                        }
+                        return null;
+                      },
+                    ).animate().fade(delay: 400.ms).slideX(begin: -0.1, end: 0),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _markController,
+                      decoration: const InputDecoration(
+                        labelText: 'Marks obtained',
+                        prefixIcon: Icon(Icons.percent_rounded),
+                        hintText: '0-100',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter marks';
+                        }
+                        final mark = int.tryParse(value);
+                        if (mark == null || mark < 0 || mark > 100) {
+                          return 'Enter a valid mark (0-100)';
+                        }
+                        return null;
+                      },
+                    ).animate().fade(delay: 600.ms).slideX(begin: -0.1, end: 0),
+                  ],
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a subject name';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _markController,
-              decoration: InputDecoration(
-                labelText: 'Marks (0-100)',
-                prefixIcon: const Icon(Icons.grade),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter marks';
-                }
-                final mark = int.tryParse(value);
-                if (mark == null || mark < 0 || mark > 100) {
-                  return 'Enter a valid mark between 0 and 100';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 32),
+            ).animate().scale(delay: 300.ms, curve: Curves.easeOutBack),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: _submit,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              ),
-              child: const Text(
-                'Add Subject',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
+              child: const Text('Add to Records'),
+            ).animate().fade(delay: 800.ms).slideY(begin: 0.5, end: 0),
           ],
         ),
       ),
