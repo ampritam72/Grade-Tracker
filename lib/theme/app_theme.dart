@@ -15,7 +15,7 @@ class AppTheme {
         primary: primaryColor,
         secondary: accentColor,
         tertiary: secondaryColor,
-        surface: const Color(0xFFF8FAFC),
+        surface: Colors.transparent, // Background will be an image
         onSurface: const Color(0xFF1E293B),
       ),
       textTheme: GoogleFonts.outfitTextTheme(),
@@ -34,14 +34,14 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.grey.withOpacity(0.1)),
+          side: BorderSide(color: Colors.white.withOpacity(0.5)),
         ),
-        color: Colors.white,
+        color: Colors.white.withOpacity(0.4), // Glassmorphism
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.grey.withOpacity(0.05),
+        fillColor: Colors.white.withOpacity(0.4),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
@@ -79,7 +79,7 @@ class AppTheme {
         primary: primaryColor,
         secondary: accentColor,
         tertiary: secondaryColor,
-        surface: const Color(0xFF0F172A),
+        surface: Colors.transparent,
         onSurface: const Color(0xFFF1F5F9),
       ),
       textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme),
@@ -98,14 +98,14 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.white.withOpacity(0.05)),
+          side: BorderSide(color: Colors.white.withOpacity(0.1)),
         ),
-        color: const Color(0xFF1E293B),
+        color: const Color(0xFF1E293B).withOpacity(0.6), // Glassmorphism for dark
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.black.withOpacity(0.2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,

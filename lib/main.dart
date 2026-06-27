@@ -50,38 +50,69 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        title: const Text('GradeMaster'),
-        actions: [
-          IconButton(
-            style: IconButton.styleFrom(
-              backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+      body: Stack(
+        children: [
+          // Global Gradient Background
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/background.png',
+              fit: BoxFit.cover,
             ),
-            icon: Icon(
-              provider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
-              color: theme.colorScheme.primary,
-            ),
-            onPressed: () => provider.toggleTheme(),
           ),
-          const SizedBox(width: 8),
+          // Subtle overlay for better readability in dark mode
+          if (provider.isDarkMode)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.4),
+              ),
+            ),
+          // Main Content
+          SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                AppBar(
+                  title: const Text('GradeMaster'),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  actions: [
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                      ),
+                      icon: Icon(
+                        provider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                        color: theme.colorScheme.primary,
+                      ),
+                      onPressed: () => provider.toggleTheme(),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+                Expanded(
+                  child: PageTransitionSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                      return FadeThroughTransition(
+                        animation: primaryAnimation,
+                        secondaryAnimation: secondaryAnimation,
+                        child: child,
+                      );
+                    },
+                    child: _screens[provider.currentNavigationIndex],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
-      ),
-      body: PageTransitionSwitcher(
-        duration: const Duration(milliseconds: 400),
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-          return FadeThroughTransition(
-            animation: primaryAnimation,
-            secondaryAnimation: secondaryAnimation,
-            child: child,
-          );
-        },
-        child: _screens[provider.currentNavigationIndex],
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.fromLTRB(24, 0, 24, 24),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: theme.colorScheme.surface.withOpacity(provider.isDarkMode ? 0.8 : 0.6),
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -98,7 +129,7 @@ class MainScreen extends StatelessWidget {
               provider.setNavigationIndex(index);
             },
             backgroundColor: Colors.transparent,
-            indicatorColor: theme.colorScheme.primary.withOpacity(0.1),
+            indicatorColor: theme.colorScheme.primary.withOpacity(0.2),
             destinations: [
               NavigationDestination(
                 icon: Icon(Icons.add_rounded, color: theme.colorScheme.primary),
