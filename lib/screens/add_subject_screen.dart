@@ -57,7 +57,17 @@ class _AddSubjectScreenState extends State<AddSubjectScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 20),
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 100,
+                  height: 100,
+                ),
+              ),
+            ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),
+            const SizedBox(height: 24),
             Text(
               'Add New Subject',
               style: theme.textTheme.headlineMedium?.copyWith(

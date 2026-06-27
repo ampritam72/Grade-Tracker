@@ -7,6 +7,8 @@ import 'screens/add_subject_screen.dart';
 import 'screens/subject_list_screen.dart';
 import 'screens/summary_screen.dart';
 
+import 'screens/splash_screen.dart';
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -24,12 +26,12 @@ class StudentGradeApp extends StatelessWidget {
     final gradeProvider = Provider.of<GradeProvider>(context);
 
     return MaterialApp(
-      title: 'Student Grade Tracker',
+      title: 'Grade Tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: gradeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: const MainScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -72,7 +74,7 @@ class MainScreen extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
-                  title: const Text('GradeMaster'),
+                  title: const Text('Grade Tracker'),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   actions: [
